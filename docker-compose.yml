@@ -1,0 +1,22 @@
+app:
+  build: ./www
+  container_name: app
+  restart: always
+  ports:
+    - "80:80" # web
+  links:
+    - database:database
+  # volumes:
+    # - ./www:/var/www
+    # - ./nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
+
+database:
+  build: ./database
+  container_name: database
+  restart: always
+  ports:
+    - "3306:3306"
+  volumes:
+    - ./store/database:/var/lib/mysql
+  env_file:
+    - .env
