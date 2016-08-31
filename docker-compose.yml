@@ -6,6 +6,7 @@ app:
     - "80:80" # web
   links:
     - database:database
+    - redis:redis
   # volumes:
     # - ./www:/var/www
     # - ./nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
@@ -20,3 +21,10 @@ database:
     - ./store/database:/var/lib/mysql
   env_file:
     - .env
+
+redis:
+  build: ./redis
+  container_name: redis
+  restart: always
+  ports:
+    - "6379:6379"
