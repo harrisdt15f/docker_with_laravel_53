@@ -15,6 +15,7 @@
 1. Docker base
 1. Nginx
 1. MySQL Server
+1. Redis Server
 1. Laravel 5.3 (with PHP7.0, Scheduling)
 1. Supervisor
 
