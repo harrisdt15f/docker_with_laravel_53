@@ -61,6 +61,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # supervisor
 COPY ./supervisor/*.conf /etc/supervisor/conf.d/
 COPY ./supervisor/run_queue.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/run_queue.sh
 
 # project source code
 COPY ./html /var/www/html
