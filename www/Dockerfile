@@ -36,7 +36,7 @@ ENV NODEJS_DEPS \
 
 # ...put your own build instructions here...
 RUN set -xe && \
-        apt-add-repository ppa:ondrej/php && \
+        LANG=C.UTF-8 apt-add-repository ppa:ondrej/php && \
         apt-get update && apt-get install -y --force-yes --no-install-recommends --no-install-suggests \
             $BUILD_DEPS \
             $NGINX_DEPS \
