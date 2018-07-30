@@ -6,6 +6,6 @@ RUN set -xe && \
         mkdir -p /var/run/mysqld && \
         chmod -R 777 /var/run/mysqld && \
 
-        # 改為台北時區
-        echo "Asia/Taipei" > /etc/timezone && \
+        # 改为中国时间
+        echo "Asia/Shanghai" > /etc/timezone && \
         dpkg-reconfigure --frontend noninteractive tzdata
