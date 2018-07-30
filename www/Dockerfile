@@ -12,23 +12,23 @@ ENV BUILD_DEPS \
 ENV NGINX_DEPS \
         nginx
 
-ENV PHP70_DEPS \
-        php7.0 \
-        php7.0-cli \
-        php7.0-common \
-        php7.0-mysql \
-        php7.0-fpm \
-        php7.0-dev \
-        php7.0-zip \
+ENV PHP56_DEPS \
+        php5.6 \
+        php5.6-cli \
+        php5.6-common \
+        php5.6-mysql \
+        php5.6-fpm \
+        php5.6-dev \
+        php5.6-zip \
         php-xdebug \
         php-mcrypt \
-        php7.0-soap \
-        php7.0-mbstring \
-        php7.0-intl \
-        php7.0-xml \
-        php7.0-curl \
-        php7.0-gd \
-        php7.0-json
+        php5.6-soap \
+        php5.6-mbstring \
+        php5.6-intl \
+        php5.6-xml \
+        php5.6-curl \
+        php5.6-gd \
+        php5.6-json
 
 ENV NODEJS_DEPS \
         nodejs \
@@ -40,7 +40,7 @@ RUN set -xe && \
         apt-get update && apt-get install -y --force-yes --no-install-recommends --no-install-suggests \
             $BUILD_DEPS \
             $NGINX_DEPS \
-            $PHP70_DEPS \
+            $PHP56_DEPS \
             $NODEJS_DEPS \
             supervisor \
         && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -50,7 +50,7 @@ COPY ./nginx/vhost.conf /etc/nginx/conf.d/vhost.conf
 RUN rm -Rf /etc/nginx/sites-enabled/default
 
 # php
-RUN /etc/init.d/php7.0-fpm start
+RUN /etc/init.d/php5.6-fpm start
 
 # PHP composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -78,8 +78,8 @@ RUN php artisan key:generate
 # start laravel schedule
 RUN /bin/bash -c 'crontab -l | { cat; echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1"; } | crontab -'
 
-# 改為台北時區
-RUN ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime && dpkg-reconfigure -fnoninteractive tzdata
+# 改为上海时间
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && dpkg-reconfigure -fnoninteractive tzdata
 
 EXPOSE 80 433
 
