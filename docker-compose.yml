@@ -1,6 +1,6 @@
 app:
   build: ./www
-  container_name: app
+  container_name: bocat2_0
   restart: always
   ports:
     - "80:80" # web
