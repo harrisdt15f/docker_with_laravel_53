@@ -21,7 +21,7 @@ ENV PHP56_DEPS \
         php5.6-dev \
         php5.6-zip \
         php-xdebug \
-        php-mcrypt \
+        php5.6-mcrypt \
         php5.6-soap \
         php5.6-mbstring \
         php5.6-intl \
@@ -64,19 +64,19 @@ COPY ./supervisor/run_queue.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/run_queue.sh
 
 # project source code
-COPY ./html /var/www/html
-WORKDIR /var/www/html
-RUN cp -n .env.example .env
-RUN rm -Rf node_modules
+#COPY ./html /var/www/html
+#WORKDIR /var/www/html/bocat_2.0
+#RUN cp -n .env.example .env
+#RUN rm -Rf node_modules
 
 # composer install
-RUN composer config -g repositories.packagist composer http://packagist.phpcomposer.com
-RUN composer install --profile --no-dev --optimize-autoloader
-RUN chown -R www-data:www-data .
-RUN php artisan key:generate
+#RUN composer config -g repositories.packagist composer http://packagist.phpcomposer.com
+#RUN composer install --profile --no-dev --optimize-autoloader
+#RUN chown -R www-data:www-data .
+#RUN php artisan key:generate
 
 # start laravel schedule
-RUN /bin/bash -c 'crontab -l | { cat; echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1"; } | crontab -'
+RUN /bin/bash -c 'crontab -l | { cat; echo "* * * * * php /var/www/html/bocat_2.0/artisan schedule:run >> /dev/null 2>&1"; } | crontab -'
 
 # 改为上海时间
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && dpkg-reconfigure -fnoninteractive tzdata

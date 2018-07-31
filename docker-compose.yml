@@ -1,4 +1,4 @@
-app:
+bocat2_0:
   build: ./www
   container_name: bocat2_0
   restart: always
@@ -7,8 +7,9 @@ app:
   links:
 #    - database:database
     - redis:redis
-  # volumes:
-    # - ./www:/var/www
+    - memcached:memcached
+  volumes:
+    - /opt/lampp/htdocs:/var/www/html
     # - ./nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
 
 #database:
@@ -28,3 +29,10 @@ redis:
   restart: always
   ports:
     - "6379:6379"
+
+memcached:
+  build: ./memcached
+  container_name: memcached
+  restart: always
+  ports:
+  - "11211:11211"
