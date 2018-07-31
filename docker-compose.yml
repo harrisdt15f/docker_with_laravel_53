@@ -7,7 +7,7 @@ bocat2_0:
   links:
 #    - database:database
     - redis:redis
-    - memcached:memcached
+#    - memcached:memcached
   volumes:
     - /opt/lampp/htdocs:/var/www/html
     # - ./nginx/vhost.conf:/etc/nginx/conf.d/vhost.conf
@@ -30,9 +30,9 @@ redis:
   ports:
     - "6379:6379"
 
-memcached:
-  build: ./memcached
-  container_name: memcached
-  restart: always
-  ports:
-  - "11211:11211"
+#memcached:
+#  build: ./memcached
+#  container_name: memcached
+#  restart: always
+#  ports:
+#  - "11211:11211"

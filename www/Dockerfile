@@ -7,6 +7,7 @@ ENV BUILD_DEPS \
         re2c \
         net-tools \
         git \
+        libmemcached-dev \
         unzip
 
 ENV NGINX_DEPS \
@@ -34,6 +35,12 @@ ENV NODEJS_DEPS \
         nodejs \
         npm
 
+ENV PHP_MEMCACHED \
+        git clone https://github.com/php-memcached-dev/php-memcached.git /usr/src/php/ext/memcached \
+        && cd /usr/src/php/ext/memcached \
+            && docker-php-ext-configure memcached \
+            && docker-php-ext-install memcached \
+
 # ...put your own build instructions here...
 RUN set -xe && \
         LANG=C.UTF-8 add-apt-repository ppa:ondrej/php && \
@@ -43,11 +50,18 @@ RUN set -xe && \
             $PHP56_DEPS \
             $NODEJS_DEPS \
             supervisor \
+        && $PHP_MEMCACHED \
         && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # nginx
 COPY ./nginx/vhost.conf /etc/nginx/conf.d/vhost.conf
 RUN rm -Rf /etc/nginx/sites-enabled/default
+
+# install phpunit
+RUN curl https://phar.phpunit.de/phpunit.phar -L > phpunit.phar \
+  && chmod +x phpunit.phar \
+  && mv phpunit.phar /usr/local/bin/phpunit \
+  && phpunit --version
 
 # php
 RUN /etc/init.d/php5.6-fpm start
@@ -81,7 +95,7 @@ RUN /bin/bash -c 'crontab -l | { cat; echo "* * * * * php /var/www/html/bocat_2.
 # 改为上海时间
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && dpkg-reconfigure -fnoninteractive tzdata
 
-EXPOSE 80 433
+EXPOSE 80 433 9000
 
 # Use baseimage-docker's init system.
 CMD ["/usr/bin/supervisord"]
