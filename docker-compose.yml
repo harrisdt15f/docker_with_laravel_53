@@ -7,6 +7,7 @@ bocat2_0:
   links:
 #    - database:database
     - redis:redis
+    - php56:php56
 #    - memcached:memcached
   volumes:
     - /opt/lampp/htdocs:/var/www/html
@@ -29,6 +30,13 @@ redis:
   restart: always
   ports:
     - "6379:6379"
+
+php56:
+  build: ./php56fpm
+  container_name: php56fpm
+  restart: always
+  ports:
+    - "9000:9000"
 
 #memcached:
 #  build: ./memcached
